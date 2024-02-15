@@ -10,7 +10,7 @@ months = [
 
 def genrate():
 
-    base_sales = random.randint(2000,20000)  # Base normal monthly sales amount
+    base_sales = random.randint(20000,200000)  # Base normal monthly sales amount
 
     # Simulating sales for each month with specific rises randomly chosen
 
@@ -20,6 +20,8 @@ def genrate():
     rise_factor = random.uniform(1.5,3)
 
     # Generating simulated sales data with randomness
+
+    total_yearly_sales = 0
     sales_data = []
     for i in range (1,13):
         sales_amount = base_sales
@@ -33,6 +35,8 @@ def genrate():
         sales_amount *= (1 + random_variation)
 
         sales_data.append(round(sales_amount, 2))
+        total_yearly_sales += round(sales_amount, 2)
+    
 
     a,b = laon_amount_genrate(base_sales)
     c,d,e = loan_amount_application_month(rise_months_start,rise_months_end)
@@ -42,13 +46,14 @@ def genrate():
     sales_data.append(c)
     sales_data.append(d)
     sales_data.append(e)
+    sales_data.append(round(total_yearly_sales/12))
     
     return sales_data
 
 
 def laon_amount_genrate(base_sales):
 
-    loan_amount_factor = random.uniform(2,3)
+    loan_amount_factor = random.uniform(2,5)
 
     loan_amount = base_sales*loan_amount_factor
 
@@ -73,3 +78,5 @@ def loan_amount_application_month(start_month,end_month):
         months_before_season = random.randint(1,3)
     
     return peak_season,months_before_season,months_left_in_peak_season,
+
+
