@@ -21,12 +21,12 @@ export default function Body() {
                 
             </div>
             <div style={mystyle}>
-                <div class="d-grid gap-4 col-6 mx-auto">
-                    <Link to="/fill-a-form" class="d-grid gap-3 col-3 mx-auto">
-                        <button class="btn btn-primary" type="button">Fill a Form</button>
+                <div className="d-grid gap-4 col-6 mx-auto">
+                    <Link to="/fill-a-form" className="d-grid gap-3 col-3 mx-auto">
+                        <button className="btn btn-primary" type="button">Fill a Form</button>
                     </Link>
-                    <Link to="/upload-csv-file" class="d-grid gap-3 col-3 mx-auto">
-                        <button class="btn btn-primary" type="button">Upload CSV file</button>
+                    <Link to="/upload-csv-file" className="d-grid gap-3 col-3 mx-auto">
+                        <button className="btn btn-primary" type="button">Upload CSV file</button>
                     </Link>
                 </div>
             </div>
