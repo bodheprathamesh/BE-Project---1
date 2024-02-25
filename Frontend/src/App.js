@@ -5,6 +5,7 @@ import Csv from './components/Csv';
 import Form from './components/Form';
 import Body from './components/Body';
 import UpdateNavbar from './components/UpdateNavbar';
+import Sample from './components/Sample';
 
 function App() {
   return (
@@ -16,7 +17,9 @@ function App() {
         <Route path="/upload-csv-file" element={<><UpdateNavbar/><Csv/></>}></Route>
       </Routes>
     </BrowserRouter>
-    {/* <Body/> */}
+    <div className="container my-5">
+      <Sample/>
+    </div>
     </>
   );
 }
