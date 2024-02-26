@@ -1,23 +1,221 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 
 export default function Form() {
+
+  const [name, setName] = useState('');
+  const [businessName, setBusinessName] = useState('');
+  const [businessType, setBusinessType] = useState('');
+
+  const [jan, setJan] = useState('');
+  const [feb, setFeb] = useState('');
+  const [mar, setMar] = useState('');
+  const [apr, setApr] = useState('');
+  const [may, setMay] = useState('');
+  const [jun, setJun] = useState('');
+  const [jul, setJul] = useState('');
+  const [aug, setAug] = useState('');
+  const [sep, setSep] = useState('');
+  const [oct, setOct] = useState('');
+  const [nov, setNov] = useState('');
+  const [dec, setDec] = useState('');
+
+  const [cibil, setCibil] = useState('');
+  const [age, setAge] = useState('');
+  const [duration, setDuration] = useState('');
+  const [transaction_count, setTransaction_count] = useState('');
+
+  const endpoint = "http://127.0.0.1:8000/creditapi/"
+
+  const fetchData = async()=>{
+    console.log('fetching...')
+    const respone = await axios.get(endpoint)
+    console.log(respone)
+    const {data} = respone
+    console.log({data})
+    return data
+  }
+
+  useEffect(()=>{
+    fetchData()
+  },[])
+
+  const postData = async()=>{
+    const body = {jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec,age,duration,transaction_count}
+    const respond = await axios.post(endpoint,body)
+    console.log(respond)
+    return respond.data
+
+  }
+  const handleSendData = async()=>{
+    const newData = await postData();
+    console.log(newData)
+  }
+  
+
+  const handleNameChange = (event) => {
+    setName(event.target.value)
+  }
+  const handleBusinessNameChange = (event) => {
+    setBusinessName(event.target.value)
+  }
+  const handleBusinessTypeChange = (event) => {
+    setBusinessType(event.target.value)
+  }
+  const handleJanChange = (event) => {
+    setJan(event.target.value)
+  }
+  const handleFebChange = (event) => {
+    setFeb(event.target.value)
+  }
+  const handleMarChange = (event) => {
+    setMar(event.target.value)
+  }
+  const handleAprChange = (event) => {
+    setApr(event.target.value)
+  }
+  const handleMayChange = (event) => {
+    setMay(event.target.value)
+  }
+  const handleJunChange = (event) => {
+    setJun(event.target.value)
+  }
+  const handleJulChange = (event) => {
+    setJul(event.target.value)
+  }
+  const handleAugChange = (event) => {
+    setAug(event.target.value)
+  }
+  const handleSepChange = (event) => {
+    setSep(event.target.value)
+  }
+  const handleOctChange = (event) => {
+    setOct(event.target.value)
+  }
+  const handleNovChange = (event) => {
+    setNov(event.target.value)
+  }
+  const handleDecChange = (event) => {
+    setDec(event.target.value)
+  }
+  const handleCibilChange = (event) => {
+    setCibil(event.target.value)
+  }
+  const handleAgeChange = (event) => {
+    setAge(event.target.value)
+  }
+  const handleDurationChange = (event) => {
+    setDuration(event.target.value)
+  }
+  const handleTransactionCountChange = (event) => {
+    setTransaction_count(event.target.value)
+  }
+
   return (
     <>
-      <div className='contianer my-5'>
+      <div className='contianer my-2'>
+        <div className="container">
+          <h3 style={{textAlign:"center"}}>Fill out the form to check your credit eligibility</h3>
+        </div>
         <form action="">
           <div className="container">
-            <div className="mb-3">
-              <label for="exampleFormControlInput1" class="form-label">Name</label>
-              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" required />
+            <div className="row g-3 my-5">
+              <div className="col">
+                <label htmlFor="formGroupExampleInput" className="form-label">Name</label>
+                <input type="text" className="form-control" placeholder="First name" aria-label="First name" value={name} onChange={handleNameChange} />
+              </div>
+              <div className="col">
+                <label htmlFor="formGroupExampleInput" className="form-label">Business Name</label>
+                <input type="text" className="form-control" placeholder="Business Name" aria-label="Last name" value={businessName} onChange={handleBusinessNameChange}/>
+              </div>
+              <div className="col">
+                <label htmlFor="formGroupExampleInput" className="form-label">Business type</label>
+                <input type="text" className="form-control" placeholder="Business type" aria-label="First name" value={businessType} onChange={handleBusinessTypeChange} />
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea>
+            <div className="container my-3">
+              <h5 style={{textAlign:"center"}}>Provide total income for below finacial months</h5>
+
+              <div className="row g-3 my-2">
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">January</label>
+                  <input type="number" className="form-control" placeholder="Jan Income" aria-label="First name" value={jan} onChange={handleJanChange}/>
+                </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">February</label>
+                  <input type="number" className="form-control" placeholder="Feb Income" aria-label="Last name" value={feb} onChange={handleFebChange}/>
+                </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">March</label>
+                  <input type="number" className="form-control" placeholder="Mar Income" aria-label="First name" value={mar} onChange={handleMarChange}/>
+                </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">April</label>
+                  <input type="number" className="form-control" placeholder="Apr Income" aria-label="First name" value={apr} onChange={handleAprChange}/>
+                </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">May</label>
+                  <input type="number" className="form-control" placeholder="May Income" aria-label="First name" value={may} onChange={handleMayChange}/>
+                </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">June</label>
+                  <input type="number" className="form-control" placeholder="Jun Income" aria-label="First name" value={jun} onChange={handleJunChange}/>
+                </div>
+              </div>
+              <div className="row g-3 my-2">
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">July</label>
+                  <input type="number" className="form-control" placeholder="July Income" aria-label="First name" value={jul} onChange={handleJulChange}/>
+                </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">August</label>
+                  <input type="number" className="form-control" placeholder="Aug Income" aria-label="Last name" value={aug} onChange={handleAugChange}/>
+                </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">September</label>
+                  <input type="number" className="form-control" placeholder="Sep Income" aria-label="First name" value={sep} onChange={handleSepChange}/>
+                </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">October</label>
+                  <input type="number" className="form-control" placeholder="Oct Income" aria-label="First name" value={oct} onChange={handleOctChange}/>
+                </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">November</label>
+                  <input type="number" className="form-control" placeholder="Nov Income" aria-label="First name" value={nov} onChange={handleNovChange}/>
+                </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">December</label>
+                  <input type="number" className="form-control" placeholder="Dec Income" aria-label="First name" value={dec} onChange={handleDecChange}/>
+                </div>
+              </div>
+            </div>
+            <div className="container my-5">
+              <h5 style={{textAlign:"center"}}>Additional Details</h5>
+
+              <div className="row g-3 my-2">
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">CIBIL score</label>
+                  <input type="number" className="form-control" placeholder="CIBIL score" aria-label="First name" value={cibil} onChange={handleCibilChange} />
+                </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">Your Age</label>
+                  <input type="number" className="form-control" placeholder="Age" aria-label="Last name" value={age} onChange={handleAgeChange}/>
+                </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">Credit Duration</label>
+                  <input type="number" className="form-control" placeholder="Duration" aria-label="First name" value={duration} onChange={handleDurationChange}/>
+                </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">Transaction count</label>
+                  <input type="number" className="form-control" placeholder="Count" aria-label="First name" value={transaction_count} onChange={handleTransactionCountChange}/>
+                </div>
+              </div>
             </div>
             <div className="mb-3">
-              <button type="submit" class="btn btn-primary my-3">Submit</button>
+              <button type="submit" onClick={handleSendData} className="btn btn-primary my-3">Submit</button>
             </div>
           </div>
+
         </form>
       </div>
     </>

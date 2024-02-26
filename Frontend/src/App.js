@@ -12,14 +12,12 @@ function App() {
     <>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<><Navbar/><Body /></>}></Route>
+        <Route path="/" element={<><Navbar/><Body /><Sample/></>}></Route>
         <Route path="/fill-a-form" element={<><UpdateNavbar/><Form /></>}></Route>
         <Route path="/upload-csv-file" element={<><UpdateNavbar/><Csv/></>}></Route>
       </Routes>
     </BrowserRouter>
-    <div className="container my-5">
-      <Sample/>
-    </div>
+    
     </>
   );
 }
