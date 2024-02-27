@@ -7,6 +7,7 @@ import Body from './components/Body';
 import UpdateNavbar from './components/UpdateNavbar';
 import Sample from './components/Sample';
 
+
 function App() {
   return (
     <>

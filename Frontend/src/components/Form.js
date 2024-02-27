@@ -1,55 +1,48 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 
 export default function Form() {
+  const [postData1, setPostData1] = useState('');
 
   const [name, setName] = useState('');
   const [businessName, setBusinessName] = useState('');
   const [businessType, setBusinessType] = useState('');
 
-  const [jan, setJan] = useState('');
-  const [feb, setFeb] = useState('');
-  const [mar, setMar] = useState('');
-  const [apr, setApr] = useState('');
-  const [may, setMay] = useState('');
-  const [jun, setJun] = useState('');
-  const [jul, setJul] = useState('');
-  const [aug, setAug] = useState('');
-  const [sep, setSep] = useState('');
-  const [oct, setOct] = useState('');
-  const [nov, setNov] = useState('');
-  const [dec, setDec] = useState('');
+  const [jan, setJan] = useState();
+  const [feb, setFeb] = useState();
+  const [mar, setMar] = useState();
+  const [apr, setApr] = useState();
+  const [may, setMay] = useState();
+  const [jun, setJun] = useState();
+  const [jul, setJul] = useState();
+  const [aug, setAug] = useState();
+  const [sep, setSep] = useState();
+  const [oct, setOct] = useState();
+  const [nov, setNov] = useState();
+  const [dec, setDec] = useState();
 
   const [cibil, setCibil] = useState('');
-  const [age, setAge] = useState('');
-  const [duration, setDuration] = useState('');
-  const [transaction_count, setTransaction_count] = useState('');
+  const [age, setAge] = useState(25);
+  const [duration, setDuration] = useState(10);
+  const [transaction_count, setTransaction_count] = useState(90);
 
   const endpoint = "http://127.0.0.1:8000/creditapi/"
 
-  const fetchData = async()=>{
-    console.log('fetching...')
-    const respone = await axios.get(endpoint)
-    console.log(respone)
-    const {data} = respone
-    console.log({data})
-    return data
-  }
-
-  useEffect(()=>{
-    fetchData()
-  },[])
-
   const postData = async()=>{
     const body = {jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec,age,duration,transaction_count}
-    const respond = await axios.post(endpoint,body)
-    console.log(respond)
-    return respond.data
+    try {
+      const response = await axios.post(endpoint, body);
+      // Update the state with the response data
+      setPostData1(response.data);
+      setTimeout(3000)
+      console.log(postData1)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
 
   }
   const handleSendData = async()=>{
     const newData = await postData();
-    console.log(newData)
   }
   
 
@@ -212,12 +205,20 @@ export default function Form() {
               </div>
             </div>
             <div className="mb-3">
-              <button type="submit" onClick={handleSendData} className="btn btn-primary my-3">Submit</button>
+              <button type="button" onClick={handleSendData} className="btn btn-primary my-3">Submit</button>
             </div>
           </div>
 
         </form>
       </div>
+      <div>
+      {postData1 && (
+        <div>
+          <h2>POST Request Data:</h2>
+          <p>{JSON.stringify(postData1)}</p> {/* Displaying the POST data */}
+        </div>
+      )}
+    </div>
     </>
   )
 }
