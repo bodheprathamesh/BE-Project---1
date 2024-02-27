@@ -76,7 +76,7 @@ def getPredictions(jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec):
     print(prediction)
     
     # print(type(prediction[0]))
-    return prediction[0]
+    return prediction[0][0]
     
 def result_function(data):
     print("in result function")
