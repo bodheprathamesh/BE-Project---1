@@ -31,9 +31,8 @@ def creditinfoapi(request):
         if serializer.is_valid():
             serializer.save()
             prediction_value = result_function(python_data)
-            # res = {'msg' : 'Data inserted successfully'}
             str_val = str(prediction_value)
-            print(type(str_val))
+            print(prediction_value)
             res = {'msg' : str_val }
             json_data = JSONRenderer().render(res)
             return HttpResponse(json_data,content_type = 'application/json')
@@ -41,12 +40,12 @@ def creditinfoapi(request):
         return HttpResponse(json_data,content_type = 'application/json')     
 
 
-def getPredictions(jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec,age,duration,transaction_count):
+def getPredictions(jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec):
 
     print("in getpredictions")
 
 
-    with open('xgb_model.sav', 'rb') as f:
+    with open('lstm_model.sav', 'rb') as f:
         model = pickle.load(f)
     # model = pickle.load(open('ml_model.sav', 'rb'))
     # scaled = pickle.load(open('scaler.sav', 'rb'))
@@ -66,13 +65,15 @@ def getPredictions(jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec,age,duration,
         "Dec": [dec],
     }
 
+    print(input_data)
+
     df = pd.DataFrame(input_data)
 
-    dtest = xgb.DMatrix(df)
-
     prediction = model.predict(
-        dtest
+        df
     )
+
+    print(prediction)
     
     # print(type(prediction[0]))
     return prediction[0]
@@ -93,11 +94,8 @@ def result_function(data):
     oct = int(data['oct'])
     nov = int(data['nov'])
     dec = int(data['dec'])
-    age = int(data['age'])
-    duration = int(data['duration'])
-    transaction_count = int(data['transaction_count'])
 
-    result = getPredictions(jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec,age,duration,transaction_count)
+    result = getPredictions(jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec)
 
     # print(result)
 
