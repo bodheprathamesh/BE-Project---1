@@ -5,7 +5,8 @@ import Csv from './components/Csv';
 import Form from './components/Form';
 import Body from './components/Body';
 import UpdateNavbar from './components/UpdateNavbar';
-import Sample from './components/Sample';
+import Success from './components/Success';
+// import Sample from './components/Sample';
 
 
 function App() {
@@ -13,9 +14,10 @@ function App() {
     <>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<><Navbar/><Body /><Sample/></>}></Route>
+        <Route path="/" element={<><Navbar/><Body /></>}></Route>
         <Route path="/fill-a-form" element={<><UpdateNavbar/><Form /></>}></Route>
         <Route path="/upload-csv-file" element={<><UpdateNavbar/><Csv/></>}></Route>
+        <Route path="/success" element={<><Success/></>}></Route>
       </Routes>
     </BrowserRouter>
     
