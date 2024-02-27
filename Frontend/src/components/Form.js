@@ -1,35 +1,38 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import Success from './Success';
+import { Link } from 'react-router-dom';
 
 export default function Form() {
+  // let navigate = useNavigate(); 
   const [postData1, setPostData1] = useState('');
 
   const [name, setName] = useState('');
   const [businessName, setBusinessName] = useState('');
   const [businessType, setBusinessType] = useState('');
 
-  const [jan, setJan] = useState();
-  const [feb, setFeb] = useState();
-  const [mar, setMar] = useState();
-  const [apr, setApr] = useState();
-  const [may, setMay] = useState();
-  const [jun, setJun] = useState();
-  const [jul, setJul] = useState();
-  const [aug, setAug] = useState();
-  const [sep, setSep] = useState();
-  const [oct, setOct] = useState();
-  const [nov, setNov] = useState();
-  const [dec, setDec] = useState();
+  const [jan, setJan] = useState('');
+  const [feb, setFeb] = useState('');
+  const [mar, setMar] = useState('');
+  const [apr, setApr] = useState('');
+  const [may, setMay] = useState('');
+  const [jun, setJun] = useState('');
+  const [jul, setJul] = useState('');
+  const [aug, setAug] = useState('');
+  const [sep, setSep] = useState('');
+  const [oct, setOct] = useState('');
+  const [nov, setNov] = useState('');
+  const [dec, setDec] = useState('');
 
   const [cibil, setCibil] = useState('');
-  const [age, setAge] = useState(25);
-  const [duration, setDuration] = useState(10);
-  const [transaction_count, setTransaction_count] = useState(90);
+  const [age, setAge] = useState();
+  const [duration, setDuration] = useState();
+  const [transaction_count, setTransaction_count] = useState();
 
   const endpoint = "http://127.0.0.1:8000/creditapi/"
 
-  const postData = async()=>{
-    const body = {jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec,age,duration,transaction_count}
+  const postData = async () => {
+    const body = { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec, age, duration, transaction_count }
     try {
       const response = await axios.post(endpoint, body);
       // Update the state with the response data
@@ -41,10 +44,13 @@ export default function Form() {
     }
 
   }
-  const handleSendData = async()=>{
+  const handleSendData = async () => {
     const newData = await postData();
+    console.log(newData)
+    // let path = `/success`; 
+    // navigate(path);
   }
-  
+
 
   const handleNameChange = (event) => {
     setName(event.target.value)
@@ -106,9 +112,9 @@ export default function Form() {
 
   return (
     <>
-      <div className='contianer my-2'>
+      <div className='contianer my-3'>
         <div className="container">
-          <h3 style={{textAlign:"center"}}>Fill out the form to check your credit eligibility</h3>
+          <h3 style={{ textAlign: "center" }}>Fill out the form to check your credit eligibility</h3>
         </div>
         <form action="">
           <div className="container">
@@ -119,7 +125,7 @@ export default function Form() {
               </div>
               <div className="col">
                 <label htmlFor="formGroupExampleInput" className="form-label">Business Name</label>
-                <input type="text" className="form-control" placeholder="Business Name" aria-label="Last name" value={businessName} onChange={handleBusinessNameChange}/>
+                <input type="text" className="form-control" placeholder="Business Name" aria-label="Last name" value={businessName} onChange={handleBusinessNameChange} />
               </div>
               <div className="col">
                 <label htmlFor="formGroupExampleInput" className="form-label">Business type</label>
@@ -127,63 +133,63 @@ export default function Form() {
               </div>
             </div>
             <div className="container my-3">
-              <h5 style={{textAlign:"center"}}>Provide total income for below finacial months</h5>
+              <h5 style={{ textAlign: "center" }}>Provide total income for below finacial months</h5>
 
               <div className="row g-3 my-2">
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">January</label>
-                  <input type="number" className="form-control" placeholder="Jan Income" aria-label="First name" value={jan} onChange={handleJanChange}/>
+                  <input type="number" className="form-control" placeholder="Jan Income" aria-label="First name" value={jan} onChange={handleJanChange} required />
                 </div>
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">February</label>
-                  <input type="number" className="form-control" placeholder="Feb Income" aria-label="Last name" value={feb} onChange={handleFebChange}/>
+                  <input type="number" className="form-control" placeholder="Feb Income" aria-label="Last name" value={feb} onChange={handleFebChange} required />
                 </div>
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">March</label>
-                  <input type="number" className="form-control" placeholder="Mar Income" aria-label="First name" value={mar} onChange={handleMarChange}/>
+                  <input type="number" className="form-control" placeholder="Mar Income" aria-label="First name" value={mar} onChange={handleMarChange} required />
                 </div>
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">April</label>
-                  <input type="number" className="form-control" placeholder="Apr Income" aria-label="First name" value={apr} onChange={handleAprChange}/>
+                  <input type="number" className="form-control" placeholder="Apr Income" aria-label="First name" value={apr} onChange={handleAprChange} required />
                 </div>
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">May</label>
-                  <input type="number" className="form-control" placeholder="May Income" aria-label="First name" value={may} onChange={handleMayChange}/>
+                  <input type="number" className="form-control" placeholder="May Income" aria-label="First name" value={may} onChange={handleMayChange} required />
                 </div>
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">June</label>
-                  <input type="number" className="form-control" placeholder="Jun Income" aria-label="First name" value={jun} onChange={handleJunChange}/>
+                  <input type="number" className="form-control" placeholder="Jun Income" aria-label="First name" value={jun} onChange={handleJunChange} required />
                 </div>
               </div>
               <div className="row g-3 my-2">
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">July</label>
-                  <input type="number" className="form-control" placeholder="July Income" aria-label="First name" value={jul} onChange={handleJulChange}/>
+                  <input type="number" className="form-control" placeholder="July Income" aria-label="First name" value={jul} onChange={handleJulChange} required />
                 </div>
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">August</label>
-                  <input type="number" className="form-control" placeholder="Aug Income" aria-label="Last name" value={aug} onChange={handleAugChange}/>
+                  <input type="number" className="form-control" placeholder="Aug Income" aria-label="Last name" value={aug} onChange={handleAugChange} required />
                 </div>
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">September</label>
-                  <input type="number" className="form-control" placeholder="Sep Income" aria-label="First name" value={sep} onChange={handleSepChange}/>
+                  <input type="number" className="form-control" placeholder="Sep Income" aria-label="First name" value={sep} onChange={handleSepChange} required />
                 </div>
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">October</label>
-                  <input type="number" className="form-control" placeholder="Oct Income" aria-label="First name" value={oct} onChange={handleOctChange}/>
+                  <input type="number" className="form-control" placeholder="Oct Income" aria-label="First name" value={oct} onChange={handleOctChange} required />
                 </div>
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">November</label>
-                  <input type="number" className="form-control" placeholder="Nov Income" aria-label="First name" value={nov} onChange={handleNovChange}/>
+                  <input type="number" className="form-control" placeholder="Nov Income" aria-label="First name" value={nov} onChange={handleNovChange} required />
                 </div>
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">December</label>
-                  <input type="number" className="form-control" placeholder="Dec Income" aria-label="First name" value={dec} onChange={handleDecChange}/>
+                  <input type="number" className="form-control" placeholder="Dec Income" aria-label="First name" value={dec} onChange={handleDecChange} required />
                 </div>
               </div>
             </div>
             <div className="container my-5">
-              <h5 style={{textAlign:"center"}}>Additional Details</h5>
+              <h5 style={{ textAlign: "center" }}>Additional Details</h5>
 
               <div className="row g-3 my-2">
                 <div className="col">
@@ -192,33 +198,35 @@ export default function Form() {
                 </div>
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">Your Age</label>
-                  <input type="number" className="form-control" placeholder="Age" aria-label="Last name" value={age} onChange={handleAgeChange}/>
+                  <input type="number" className="form-control" placeholder="Age" aria-label="Last name" value={age} onChange={handleAgeChange} required />
                 </div>
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">Credit Duration</label>
-                  <input type="number" className="form-control" placeholder="Duration" aria-label="First name" value={duration} onChange={handleDurationChange}/>
+                  <input type="number" className="form-control" placeholder="Duration" aria-label="First name" value={duration} onChange={handleDurationChange} required />
                 </div>
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">Transaction count</label>
-                  <input type="number" className="form-control" placeholder="Count" aria-label="First name" value={transaction_count} onChange={handleTransactionCountChange}/>
+                  <input type="number" className="form-control" placeholder="Count" aria-label="First name" value={transaction_count} onChange={handleTransactionCountChange} required />
                 </div>
               </div>
             </div>
-            <div className="mb-3">
-              <button type="button" onClick={handleSendData} className="btn btn-primary my-3">Submit</button>
+            <div className="container d-grid gap-2 col-1 mx-auto">
+              {/* <Link to="/success"> */}
+                <button className="btn btn-primary" onClick={handleSendData} type="button">Submit</button>
+              {/* </Link> */}
             </div>
           </div>
-
         </form>
       </div>
       <div>
+      </div>
       {postData1 && (
-        <div>
-          <h2>POST Request Data:</h2>
-          <p>{JSON.stringify(postData1)}</p> {/* Displaying the POST data */}
-        </div>
-      )}
-    </div>
+          <div>
+            <h2>POST Request Data:</h2>
+            <p>{JSON.stringify(postData1)}</p> {/* Displaying the POST data */}
+          </div>
+        )}
+      <Success sentData={postData1} />
     </>
   )
 }
