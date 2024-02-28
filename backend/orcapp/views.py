@@ -10,6 +10,7 @@ import pickle
 import xgboost as xgb
 import pandas as pd
 import json
+import tensorflow as tf
 # Create your views here.
 
 @csrf_exempt
@@ -45,8 +46,7 @@ def getPredictions(jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec):
     print("in getpredictions")
 
 
-    with open('lstm_model.sav', 'rb') as f:
-        model = pickle.load(f)
+    model = tf.keras.models.load_model('lstm_model_1.h5')
     # model = pickle.load(open('ml_model.sav', 'rb'))
     # scaled = pickle.load(open('scaler.sav', 'rb'))
 
