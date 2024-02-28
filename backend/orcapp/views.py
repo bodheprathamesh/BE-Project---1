@@ -6,10 +6,10 @@ from .serializers import infoserializer
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-import pickle
+# import pickle
 import xgboost as xgb
 import pandas as pd
-import json
+# import json
 import tensorflow as tf
 # Create your views here.
 

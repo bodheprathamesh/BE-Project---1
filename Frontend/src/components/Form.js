@@ -1,33 +1,33 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import Success from './Success';
-import { Link } from 'react-router-dom';
+// import Success from './Success';
+// import { useNavigate ,Link} from 'react-router-dom';
 
 export default function Form() {
-  // let navigate = useNavigate(); 
+  // let navigate = useNavigate();
   const [postData1, setPostData1] = useState('');
 
   const [name, setName] = useState('');
   const [businessName, setBusinessName] = useState('');
   const [businessType, setBusinessType] = useState('');
 
-  const [jan, setJan] = useState('');
-  const [feb, setFeb] = useState('');
-  const [mar, setMar] = useState('');
-  const [apr, setApr] = useState('');
-  const [may, setMay] = useState('');
-  const [jun, setJun] = useState('');
-  const [jul, setJul] = useState('');
-  const [aug, setAug] = useState('');
-  const [sep, setSep] = useState('');
-  const [oct, setOct] = useState('');
-  const [nov, setNov] = useState('');
-  const [dec, setDec] = useState('');
+  const [jan, setJan] = useState(10000);
+  const [feb, setFeb] = useState(11000);
+  const [mar, setMar] = useState(10500);
+  const [apr, setApr] = useState(9000);
+  const [may, setMay] = useState(10200);
+  const [jun, setJun] = useState(8000);
+  const [jul, setJul] = useState(12000);
+  const [aug, setAug] = useState(9600);
+  const [sep, setSep] = useState(8500);
+  const [oct, setOct] = useState(10000);
+  const [nov, setNov] = useState(12000);
+  const [dec, setDec] = useState(11000);
 
   const [cibil, setCibil] = useState('');
-  const [age, setAge] = useState();
-  const [duration, setDuration] = useState();
-  const [transaction_count, setTransaction_count] = useState();
+  const [age, setAge] = useState(30);
+  const [duration, setDuration] = useState(9);
+  const [transaction_count, setTransaction_count] = useState(150);
 
   const endpoint = "http://127.0.0.1:8000/creditapi/"
 
@@ -47,7 +47,7 @@ export default function Form() {
   const handleSendData = async () => {
     const newData = await postData();
     console.log(newData)
-    // let path = `/success`; 
+    // let path = `/success`;
     // navigate(path);
   }
 
@@ -110,12 +110,26 @@ export default function Form() {
     setTransaction_count(event.target.value)
   }
 
+  const mystyle ={
+      position :"fixed",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      backgroundColor: "#7CFC00",
+      color: "black",
+      padding: "60px",
+      borderRadius: "100%",
+      textAlign: "center",
+      boxShadow: "0px 4px 6px rgba(0, 0, 0.7, 0.7)"
+  }
   return (
+    
     <>
-      <div className='contianer my-3'>
+      {!postData1 && (<div className='contianer my-3'>
         <div className="container">
           <h3 style={{ textAlign: "center" }}>Fill out the form to check your credit eligibility</h3>
         </div>
+
         <form action="">
           <div className="container">
             <div className="row g-3 my-5">
@@ -212,21 +226,25 @@ export default function Form() {
             </div>
             <div className="container d-grid gap-2 col-1 mx-auto">
               {/* <Link to="/success"> */}
-                <button className="btn btn-primary" onClick={handleSendData} type="button">Submit</button>
+              <button className="btn btn-primary" onClick={handleSendData} type="button">Submit</button>
               {/* </Link> */}
             </div>
           </div>
         </form>
-      </div>
-      <div>
-      </div>
+      </div>)}
+
       {postData1 && (
-          <div>
-            <h2>POST Request Data:</h2>
-            <p>{JSON.stringify(postData1)}</p> {/* Displaying the POST data */}
+        <div className='container my-5'>
+
+          <div className="success-message" style={mystyle}>
+            <h1 style={{ fontWeight: 900 , fontSize: '4em'}}>Success</h1>
+            <h2 style={{ fontWeight: 500 }}>Congratulations </h2>
+            <h2 style={{ fontWeight: 400 }}>Your Credit Eligibility is:</h2>
+            <h2 style={{ fontWeight: 800 }}>{JSON.stringify(postData1["msg"])}</h2>
           </div>
-        )}
-      <Success sentData={postData1} />
+        </div>
+      )}
+      {/* {postData1 && (<Success sentData={postData1} />)} */}
     </>
   )
 }
