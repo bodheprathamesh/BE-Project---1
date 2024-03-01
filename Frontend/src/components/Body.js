@@ -13,7 +13,7 @@ export default function Body() {
     };
     return (
         <>
-            <div className="container my-5" style={mystyle}>
+            <div className="container my-3" style={mystyle}>
                 <h1 className='my-5'>Welcome to credit checker</h1>
                 <div className="container my-1 ">
                     <div className="container p-2">
