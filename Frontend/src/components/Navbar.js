@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom"
+// import {Nav , NavDropDown} from 'react-router-dom'
 
 export default function Navbar(props) {
     
@@ -16,7 +17,9 @@ export default function Navbar(props) {
                         <div className="collapse navbar-collapse" id="navbarNav">
                             <ul className="navbar-nav">
                                 {props.path !== "/login" && (<li className="nav-item">
-                                    <Link className="nav-link active " aria-current="page" to="/login"> Login</Link>
+                                    <Link className="nav-link active " aria-current="page" to="/login" onClick={props.loginHandler}> 
+                                        {props.status ? "Logout" : "Login"}
+                                    </Link>
                                 </li>)}
                                 {props.path !== "/register" &&(<li className="nav-item">
                                     <Link className="nav-link active" to="/register">Register</Link>

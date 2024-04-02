@@ -1,13 +1,18 @@
 import React from 'react'
 import { useState } from 'react';
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
-export default function Register() {
+
+
+
+export default function Register(props) {
     const endpoint = "http://127.0.0.1:8000/register/";
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [cpass, setCpass] = useState('');
+    const navigate = useNavigate();
 
     const handleUserChange = (event) => {
         setUsername(event.target.value)
@@ -27,15 +32,22 @@ export default function Register() {
         const body = { username ,email,password}
         try {
           const response = await axios.post(endpoint, body);
-          console.log(response)
+          console.log(response);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
-      }
-      const handleSendData = async () => {
-        const newData = await postData();
-        console.log(newData)
-      }
+    }
+
+    const handleSendData = async () => {
+        if (password && cpass && password === cpass) {
+            const newData = await postData();
+            console.log(newData);
+            navigate("/login");
+        } else {
+            console.error("Passwords do not match");
+        }
+    }
+
     return (
         <>
             <div className="container my-5" style={{ top: "40%" }}>

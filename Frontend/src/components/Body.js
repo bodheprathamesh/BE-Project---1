@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from "react-router-dom"
 
 
-export default function Body() {
+export default function Body(props) {
     const mystyle = {
         color: "black",
         fontweight: "bold",
