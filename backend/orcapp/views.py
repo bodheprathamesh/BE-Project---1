@@ -6,14 +6,17 @@ from .serializers import infoserializer
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-# import pickle
-import xgboost as xgb
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 import pandas as pd
-# import json
 import tensorflow as tf
 # Create your views here.
 
+
 @csrf_exempt
+# @api_view(['POST']) 
+# @permission_classes([IsAuthenticated])
 def creditinfoapi(request):
     if request.method == 'GET':
         # json_data = request.body
@@ -46,7 +49,7 @@ def getPredictions(jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec):
     print("in getpredictions")
 
 
-    model = tf.keras.models.load_model('lstm_model_1.h5')
+    model = tf.keras.models.load_model('lstm_model_2.h5')
     # model = pickle.load(open('ml_model.sav', 'rb'))
     # scaled = pickle.load(open('scaler.sav', 'rb'))
 

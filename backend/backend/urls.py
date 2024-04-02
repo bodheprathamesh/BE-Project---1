@@ -20,5 +20,5 @@ from orcapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('creditapi/',views.creditinfoapi),
-    path('',include('appauth.urls')),
+    path('auth/',include('appauth.urls')),
 ]

@@ -26,7 +26,7 @@ model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mean_square
 model.fit(X_train.values.reshape(-1, 12, 1), y_train, batch_size=64, epochs=64, validation_split=0.2, verbose=2)
 
 # Save the model
-model.save('lstm_model_1.h5')
+model.save('lstm_model_2.h5')
 
 # Load the model
 # loaded_model = tf.keras.models.load_model('lstm_model_1')
