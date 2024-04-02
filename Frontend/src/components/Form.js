@@ -26,13 +26,13 @@ export default function Form() {
 
   const [cibil, setCibil] = useState('');
   const [age, setAge] = useState(30);
-  const [duration, setDuration] = useState(9);
+  // const [duration, setDuration] = useState(9);
   const [transaction_count, setTransaction_count] = useState(150);
 
   const endpoint = "http://127.0.0.1:8000/creditapi/"
 
   const postData = async () => {
-    const body = { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec, age, duration, transaction_count }
+    const body = { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec, age, transaction_count }
     try {
       const response = await axios.post(endpoint, body);
       // Update the state with the response data
@@ -103,27 +103,27 @@ export default function Form() {
   const handleAgeChange = (event) => {
     setAge(event.target.value)
   }
-  const handleDurationChange = (event) => {
-    setDuration(event.target.value)
-  }
+  // const handleDurationChange = (event) => {
+  //   setDuration(event.target.value)
+  // }
   const handleTransactionCountChange = (event) => {
     setTransaction_count(event.target.value)
   }
 
-  const mystyle ={
-      position :"fixed",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      backgroundColor: "#7CFC00",
-      color: "black",
-      padding: "60px",
-      borderRadius: "100%",
-      textAlign: "center",
-      boxShadow: "0px 4px 6px rgba(0, 0, 0.7, 0.7)"
+  const mystyle = {
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#7CFC00",
+    color: "black",
+    padding: "60px",
+    borderRadius: "100%",
+    textAlign: "center",
+    boxShadow: "0px 4px 6px rgba(0, 0, 0.7, 0.7)"
   }
   return (
-    
+
     <>
       {!postData1 && (<div className='contianer my-3'>
         <div className="container">
@@ -214,10 +214,10 @@ export default function Form() {
                   <label htmlFor="formGroupExampleInput" className="form-label">Your Age</label>
                   <input type="number" className="form-control" placeholder="Age" aria-label="Last name" value={age} onChange={handleAgeChange} required />
                 </div>
-                <div className="col">
+                {/* <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">Credit Duration</label>
                   <input type="number" className="form-control" placeholder="Duration" aria-label="First name" value={duration} onChange={handleDurationChange} required />
-                </div>
+                </div> */}
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">Transaction count</label>
                   <input type="number" className="form-control" placeholder="Count" aria-label="First name" value={transaction_count} onChange={handleTransactionCountChange} required />
@@ -231,17 +231,59 @@ export default function Form() {
             </div>
           </div>
         </form>
+        {/* <form action="">
+          <div className="container">
+            <div className="container my-5 row g-2 my-2">
+              <div className="col">
+                <label htmlFor="formGroupExampleInput" className="form-label">Enter Amount</label>
+                <div class="col-sm-10">
+                  <input type="number" min={0} max={postData1["msg"]} className="form-control" placeholder="Amount" aria-label="First name" value={cibil} onChange={handleCibilChange} />
+                </div>
+              </div>
+              <div className="col">
+                <label htmlFor="formGroupExampleInput" className="form-label">Duration In Months</label>
+                <div class="col-sm-10">
+                  <input type="number" className="form-control" placeholder="Duration" aria-label="Last name" value={age} onChange={handleAgeChange} required />
+                </div>
+              </div>
+            </div>
+            <div className="container d-grid gap-2 col-1 mx-auto">
+              <button className="btn btn-primary" onClick={handleSendData} type="button">Apply</button>
+            </div>
+          </div>
+        </form> */}
       </div>)}
 
       {postData1 && (
         <div className='container my-5'>
 
           <div className="success-message" style={mystyle}>
-            <h1 style={{ fontWeight: 900 , fontSize: '4em'}}>Success</h1>
+            <h1 style={{ fontWeight: 900, fontSize: '4em' }}>Success</h1>
             <h2 style={{ fontWeight: 500 }}>Congratulations </h2>
             <h2 style={{ fontWeight: 400 }}>Your Credit Eligibility is:</h2>
             <h2 style={{ fontWeight: 800 }}>{JSON.stringify(postData1["msg"])}</h2>
           </div>
+          <form action="">
+            <div className="container">
+              <div className="container my-5 row g-2 my-2">
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">Enter Amount</label>
+                  <div class="col-sm-10">
+                    <input type="number" min={0} max={postData1["msg"]} className="form-control" placeholder="Amount" aria-label="First name" value={cibil} onChange={handleCibilChange} />
+                  </div>
+                </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">Duration In Months</label>
+                  <div class="col-sm-10">
+                    <input type="number" className="form-control" placeholder="Duration" aria-label="Last name" value={age} onChange={handleAgeChange} required />
+                  </div>
+                </div>
+              </div>
+              <div className="container d-grid gap-2 col-1 mx-auto">
+                <button className="btn btn-primary" onClick={handleSendData} type="button">Apply</button>
+              </div>
+            </div>
+          </form>
         </div>
       )}
       {/* {postData1 && (<Success sentData={postData1} />)} */}
