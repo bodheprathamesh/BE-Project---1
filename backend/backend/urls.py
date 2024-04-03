@@ -20,7 +20,7 @@ from orcapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('creditapi/',views.creditinfoapi),
-    path('loanrepay/',views.loan_repayment),
+    path('loanrepay/',views.loan_repayment),  
     path('emi/',views.monthly_emi),
     path('',include('appauth.urls')),
 ]

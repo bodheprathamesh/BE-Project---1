@@ -31,7 +31,7 @@ def creditinfoapi(request):
         json_data = request.body
         stream = io.BytesIO(json_data)
         python_data = JSONParser().parse(stream)
-        print(request.session['user_id'])
+        # print(request.session['user_id'])
         serializer = infoserializer(data = python_data)
         if serializer.is_valid():
             serializer.save()
@@ -105,17 +105,18 @@ def result_function(data):
 
     return result
 
-
+@csrf_exempt
 def loan_repayment(request):
     json_data = request.body
     stream = io.BytesIO(json_data)
     python_data = JSONParser().parse(stream)
-    R = 12
-    principal_amount = python_data['amount']
-    duration = python_data['duration']
-    calculate_emi = (principal_amount * R * (1+R)^duration)/((1+R)^duration-1)
+    R = 0.12
+    principal_amount = int(python_data['actualAmount'])
+    duration = int(python_data['duration'])
+    calculate_emi = (principal_amount * R * (1+R)**duration)/((1+R)**duration-1)
     str_val = str(calculate_emi)
-    res = {'msg' : str_val }
+    res = {'msg' : str_val,
+           'months' : str(duration) }
     json_data = JSONRenderer().render(res)
     return HttpResponse(json_data,content_type = 'application/json')
 
