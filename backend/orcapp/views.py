@@ -3,8 +3,9 @@ import io
 from rest_framework.parsers import JSONParser
 from .models import creditinformation, loanrepay
 from .serializers import infoserializer
+from .serializers import laonrepay as loanobjserializer
 from rest_framework.renderers import JSONRenderer
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import SessionAuthentication
@@ -142,5 +143,17 @@ def monthly_emi(request):
         return HttpResponse(json_data,content_type = 'application/json')
 
     
-
-
+@csrf_exempt
+def show_monthly_emi_details(request):
+    # id = request.session["user_id"]
+    if request.method == "POST":
+        json_data = request.body
+        stream = io.BytesIO(json_data)
+        python_data = JSONParser().parse(stream)
+        print("$$$$$$$$$$$$$$$$$$$$$$")
+        print(python_data)
+        print("$$$$$$$$$$$$$$$$$$$$$$")
+        # id = int(python_data['id'])
+        money_paid_data = loanrepay.objects.get(id = 1)
+        result = loanobjserializer(money_paid_data)
+        return JsonResponse(result.data)

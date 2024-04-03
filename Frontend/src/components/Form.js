@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+// import {id} from './Login.js'
 // import Success from './Success';
 // import { useNavigate ,Link} from 'react-router-dom';
 
-export default function Form() {
+export default function Form(props) {
   // let navigate = useNavigate();
-  let msg = 0;
+
+  useEffect(()=>{
+    console.log("in form id1 ", props.id1);
+  }, [props.id1])
+
+  let msg;
+  let msg1;
+  let msg2;
+  let user1 = "user1"
   const [postData1, setPostData1] = useState('');
   const [applyData1, setApplyData1] = useState('');
+  const [applyGet1, setGetData1] = useState('');
 
   const [name, setName] = useState('');
   const [businessName, setBusinessName] = useState('');
@@ -34,13 +44,16 @@ export default function Form() {
   const [actualAmount, setactualAmount] = useState(35000);
 
   const [messg, setmessg] = useState(0);
+  const [messg1, setmessg1] = useState(0);
+  const [messg2, setmessg2] = useState(0);
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("msg ", messg);
-  },[messg])
+  }, [messg])
 
   const endpoint = "http://127.0.0.1:8000/creditapi/"
   const endpoint2 = "http://127.0.0.1:8000/loanrepay/"
+  const endpoint3 = "http://127.0.0.1:8000/showemidetails/"
 
   const postData = async () => {
     const body = { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec, age, transaction_count }
@@ -49,7 +62,7 @@ export default function Form() {
       // Update the state with the response data
       setPostData1(response.data);
       setTimeout(3000)
-      msg = response.data.msg;
+      msg = Math.round(response.data.msg);
       setmessg(msg)
       setTimeout(3000)
       console.log(msg)
@@ -67,23 +80,44 @@ export default function Form() {
   }
 
   const postData2 = async () => {
-    const body = { actualAmount , duration ,transaction_count}
+    const body = { actualAmount, duration, transaction_count }
     try {
       const response = await axios.post(endpoint2, body);
       // Update the state with the response data
       setApplyData1(response.data);
       setTimeout(3000)
+      msg1 = Math.round(response.data.msg);
+      setmessg1(msg1)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
 
   }
   const handleApplyData = async () => {
-    if(actualAmount >parseInt(messg)){
+    if (actualAmount > parseInt(messg)) {
       alert("Actual amount cannot be greater than Credit amount")
     }
-  
+
     const newData = await postData2();
+    console.log(newData)
+  }
+  const postData3 = async () => {
+    const body = props.id1;
+    // console.log("id",id)
+    try {
+      console.log(body)
+      const response = await axios.post(endpoint3, body);
+      // Update the state with the response data
+      setGetData1(response.data);
+      setTimeout(3000)
+      msg2 = response.data;
+      setmessg2(msg2)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+  const handleGetData = async () => {
+    const newData = await postData3();
     console.log(newData)
   }
 
@@ -272,12 +306,10 @@ export default function Form() {
         </form>
       </div>)}
 
-      {postData1 && (
+      {postData1 && !applyData1 && (
         <div className='container my-5'>
           <div className="alert alert-success alert-dismissible fade show" role="alert">
-            <h4> Success ! Congratulations Your Credit Eligibility is: {messg}</h4>
-            
-            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <h4> Success ! Congratulations Your Credit Eligibility is : {messg}</h4>
           </div>
 
           {/* <div className="success-message" style={mystyle}>
@@ -317,6 +349,16 @@ export default function Form() {
         </div>
       )}
       {/* {postData1 && (<Success sentData={postData1} />)} */}
+
+      {applyData1 && (
+        <div className='container my-5'>
+          <div className="alert alert-success alert-dismissible fade show" role="alert">
+            <h4> Your monthly EMI will be : {messg1} for total amount of : {actualAmount}</h4>
+          </div>
+          <button type="button" class="btn btn-primary" onClick={handleGetData}>Button</button>
+        </div>
+      )}
+
     </>
   )
 }

@@ -53,7 +53,7 @@ def signin(request):
             user_details = User.objects.get(username = python_data["username"])
             print(user_details.id)
             msg = "Login Successfull"
-            res = {'msg' : msg, 'username' : str(request.user)}
+            res = {'msg' : msg, 'username' : str(request.user), 'id' : str(user_details.id)}
             json_data = JSONRenderer().render(res)
             return HttpResponse(json_data,content_type = 'application/json')
         else:
