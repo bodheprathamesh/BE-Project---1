@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import io
 from rest_framework.parsers import JSONParser
-from .models import creditinformation
+from .models import creditinformation, loanrepay
 from .serializers import infoserializer
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
@@ -11,6 +11,7 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 import pandas as pd
 import tensorflow as tf
+from django.contrib.auth.models import User 
 # Create your views here.
 
 
@@ -30,7 +31,7 @@ def creditinfoapi(request):
         json_data = request.body
         stream = io.BytesIO(json_data)
         python_data = JSONParser().parse(stream)
-        print(python_data)
+        print(request.session['user_id'])
         serializer = infoserializer(data = python_data)
         if serializer.is_valid():
             serializer.save()
@@ -103,3 +104,42 @@ def result_function(data):
     # print(result)
 
     return result
+
+
+def loan_repayment(request):
+    json_data = request.body
+    stream = io.BytesIO(json_data)
+    python_data = JSONParser().parse(stream)
+    R = 12
+    principal_amount = python_data['amount']
+    duration = python_data['duration']
+    calculate_emi = (principal_amount * R * (1+R)^duration)/((1+R)^duration-1)
+    str_val = str(calculate_emi)
+    res = {'msg' : str_val }
+    json_data = JSONRenderer().render(res)
+    return HttpResponse(json_data,content_type = 'application/json')
+
+
+@csrf_exempt
+def monthly_emi(request):
+    # id = request.session["user_id"]
+    if request.method == "POST":
+        json_data = request.body
+        stream = io.BytesIO(json_data)
+        python_data = JSONParser().parse(stream)
+        id = int(python_data['id'])
+        money_paid_data = loanrepay.objects.get(id = id)
+        print(money_paid_data)
+        money_paid_data.paid += money_paid_data.emi_amount
+        money_paid_data.left -= money_paid_data.emi_amount
+        money_paid_data.months_paid += 1
+        money_paid_data.months_left -= 1
+        money_paid_data.save()
+        print(money_paid_data)
+        res = {'msg' : "Thanks For Pay ! See you next month" }
+        json_data = JSONRenderer().render(res)
+        return HttpResponse(json_data,content_type = 'application/json')
+
+    
+
+
