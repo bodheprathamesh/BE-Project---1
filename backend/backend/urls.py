@@ -22,5 +22,6 @@ urlpatterns = [
     path('creditapi/',views.creditinfoapi),
     path('loanrepay/',views.loan_repayment),  
     path('emi/',views.monthly_emi),
+    path('showemidetails/',views.show_monthly_emi_details),
     path('',include('appauth.urls')),
 ]

@@ -1,10 +1,15 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 
+export let id = 0;
 export default function Login(props) {
 
+    useEffect(()=>{
+        console.log("id in login ", props.id1);
+      }, [props.id1])
+    
     const endpoint = "http://127.0.0.1:8000/login/";
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -27,9 +32,13 @@ export default function Login(props) {
           if(response.request.status === 400){
             
           }
-          else navigate("/");
-          console.log(response)
-
+        //   setTimeout(3000)
+        //   id = response.data.id
+        //   console.log(id)
+        console.log("id -->", response.data.id);
+          props.setId1(response.data.id)
+          console.log("id in login ", props.id1);
+          navigate("/");
         } catch (error) {
           console.error('Error fetching data:', error);
         }
