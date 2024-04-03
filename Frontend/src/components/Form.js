@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 // import Success from './Success';
 // import { useNavigate ,Link} from 'react-router-dom';
 
 export default function Form() {
   // let navigate = useNavigate();
+  let msg = 0;
   const [postData1, setPostData1] = useState('');
+  const [applyData1, setApplyData1] = useState('');
 
   const [name, setName] = useState('');
   const [businessName, setBusinessName] = useState('');
@@ -24,12 +26,21 @@ export default function Form() {
   const [nov, setNov] = useState(12000);
   const [dec, setDec] = useState(11000);
 
-  const [cibil, setCibil] = useState('');
+  const [cibil, setCibil] = useState();
   const [age, setAge] = useState(30);
-  // const [duration, setDuration] = useState(9);
   const [transaction_count, setTransaction_count] = useState(150);
 
+  const [duration, setDuration] = useState(9);
+  const [actualAmount, setactualAmount] = useState(35000);
+
+  const [messg, setmessg] = useState(0);
+
+  useEffect(()=>{
+    console.log("msg ", messg);
+  },[messg])
+
   const endpoint = "http://127.0.0.1:8000/creditapi/"
+  const endpoint2 = "http://127.0.0.1:8000/loanrepay/"
 
   const postData = async () => {
     const body = { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec, age, transaction_count }
@@ -38,7 +49,11 @@ export default function Form() {
       // Update the state with the response data
       setPostData1(response.data);
       setTimeout(3000)
-      console.log(postData1)
+      msg = response.data.msg;
+      setmessg(msg)
+      setTimeout(3000)
+      console.log(msg)
+      console.log(messg)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -47,8 +62,29 @@ export default function Form() {
   const handleSendData = async () => {
     const newData = await postData();
     console.log(newData)
-    // let path = `/success`;
+    // let path = /success;
     // navigate(path);
+  }
+
+  const postData2 = async () => {
+    const body = { actualAmount , duration ,transaction_count}
+    try {
+      const response = await axios.post(endpoint2, body);
+      // Update the state with the response data
+      setApplyData1(response.data);
+      setTimeout(3000)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+
+  }
+  const handleApplyData = async () => {
+    if(actualAmount >parseInt(messg)){
+      alert("Actual amount cannot be greater than Credit amount")
+    }
+  
+    const newData = await postData2();
+    console.log(newData)
   }
 
 
@@ -103,25 +139,28 @@ export default function Form() {
   const handleAgeChange = (event) => {
     setAge(event.target.value)
   }
-  // const handleDurationChange = (event) => {
-  //   setDuration(event.target.value)
-  // }
+  const handleDurationChange = (event) => {
+    setDuration(event.target.value)
+  }
   const handleTransactionCountChange = (event) => {
     setTransaction_count(event.target.value)
   }
-
-  const mystyle = {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    backgroundColor: "#7CFC00",
-    color: "black",
-    padding: "60px",
-    borderRadius: "100%",
-    textAlign: "center",
-    boxShadow: "0px 4px 6px rgba(0, 0, 0.7, 0.7)"
+  const handleActualAmountChange = (event) => {
+    setactualAmount(event.target.value)
   }
+
+  // const mystyle = {
+  //   position: "fixed",
+  //   top: "50%",
+  //   left: "50%",
+  //   transform: "translate(-50%, -50%)",
+  //   backgroundColor: "#7CFC00",
+  //   color: "black",
+  //   padding: "60px",
+  //   borderRadius: "100%",
+  //   textAlign: "center",
+  //   boxShadow: "0px 4px 6px rgba(0, 0, 0.7, 0.7)"
+  // }
   return (
 
     <>
@@ -231,56 +270,47 @@ export default function Form() {
             </div>
           </div>
         </form>
-        {/* <form action="">
-          <div className="container">
-            <div className="container my-5 row g-2 my-2">
-              <div className="col">
-                <label htmlFor="formGroupExampleInput" className="form-label">Enter Amount</label>
-                <div class="col-sm-10">
-                  <input type="number" min={0} max={postData1["msg"]} className="form-control" placeholder="Amount" aria-label="First name" value={cibil} onChange={handleCibilChange} />
-                </div>
-              </div>
-              <div className="col">
-                <label htmlFor="formGroupExampleInput" className="form-label">Duration In Months</label>
-                <div class="col-sm-10">
-                  <input type="number" className="form-control" placeholder="Duration" aria-label="Last name" value={age} onChange={handleAgeChange} required />
-                </div>
-              </div>
-            </div>
-            <div className="container d-grid gap-2 col-1 mx-auto">
-              <button className="btn btn-primary" onClick={handleSendData} type="button">Apply</button>
-            </div>
-          </div>
-        </form> */}
       </div>)}
 
       {postData1 && (
         <div className='container my-5'>
+          <div className="alert alert-success alert-dismissible fade show" role="alert">
+            <h4> Success ! Congratulations Your Credit Eligibility is: {messg}</h4>
+            
+            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
 
-          <div className="success-message" style={mystyle}>
+          {/* <div className="success-message" style={mystyle}>
             <h1 style={{ fontWeight: 900, fontSize: '4em' }}>Success</h1>
             <h2 style={{ fontWeight: 500 }}>Congratulations </h2>
             <h2 style={{ fontWeight: 400 }}>Your Credit Eligibility is:</h2>
             <h2 style={{ fontWeight: 800 }}>{JSON.stringify(postData1["msg"])}</h2>
-          </div>
+          </div> */}
           <form action="">
             <div className="container">
               <div className="container my-5 row g-2 my-2">
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">Enter Amount</label>
-                  <div class="col-sm-10">
-                    <input type="number" min={0} max={postData1["msg"]} className="form-control" placeholder="Amount" aria-label="First name" value={cibil} onChange={handleCibilChange} />
+                  <div className="col-sm-10">
+                    <input type="number" min={0} max={messg} className="form-control" placeholder="Amount" aria-label="First name" value={actualAmount} onChange={handleActualAmountChange} />
                   </div>
                 </div>
                 <div className="col">
                   <label htmlFor="formGroupExampleInput" className="form-label">Duration In Months</label>
-                  <div class="col-sm-10">
-                    <input type="number" className="form-control" placeholder="Duration" aria-label="Last name" value={age} onChange={handleAgeChange} required />
+                  <div className="col-sm-10">
+                    <input type="number" className="form-control" placeholder="Duration" aria-label="Last name" value={duration} onChange={handleDurationChange} required />
                   </div>
                 </div>
+                <div className="col">
+                  <label htmlFor="formGroupExampleInput" className="form-label">Transaction count</label>
+                  <div className="col-sm-10">
+                    <input type="number" className="form-control" placeholder="Duration" aria-label="Last name" value={transaction_count} onChange={handleTransactionCountChange} required />
+                  </div>
+                </div>
+
               </div>
               <div className="container d-grid gap-2 col-1 mx-auto">
-                <button className="btn btn-primary" onClick={handleSendData} type="button">Apply</button>
+                <button className="btn btn-primary" onClick={handleApplyData} type="button">Apply</button>
               </div>
             </div>
           </form>
