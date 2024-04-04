@@ -108,18 +108,21 @@ def result_function(data):
 
 @csrf_exempt
 def loan_repayment(request):
-    json_data = request.body
-    stream = io.BytesIO(json_data)
-    python_data = JSONParser().parse(stream)
-    R = 0.12
-    principal_amount = int(python_data['actualAmount'])
-    duration = int(python_data['duration'])
-    calculate_emi = (principal_amount * R * (1+R)**duration)/((1+R)**duration-1)
-    str_val = str(calculate_emi)
-    res = {'msg' : str_val,
-           'months' : str(duration) }
-    json_data = JSONRenderer().render(res)
-    return HttpResponse(json_data,content_type = 'application/json')
+    if request.method == "POST":
+        json_data = request.body
+        stream = io.BytesIO(json_data)
+        python_data = JSONParser().parse(stream)
+        R = 0.12
+        principal_amount = int(python_data['actualAmount'])
+        duration = int(python_data['duration'])
+        calculate_emi = (principal_amount * R * (1+R)**duration)/((1+R)**duration-1)
+        instance_emi = loanrepay(id = python_data['id'], paid = 0, left = python_data['actualAmount'], emi_amount = calculate_emi)
+        instance_emi.save()
+        str_val = str(calculate_emi)
+        res = {'msg' : str_val,
+            'months' : str(duration) }
+        json_data = JSONRenderer().render(res)
+        return HttpResponse(json_data,content_type = 'application/json')
 
 
 @csrf_exempt
