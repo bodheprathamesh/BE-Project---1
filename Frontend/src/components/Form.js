@@ -7,7 +7,7 @@ import axios from 'axios'
 export default function Form(props) {
   // let navigate = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("in form id1 ", props.id1);
   }, [props.id1])
 
@@ -80,7 +80,8 @@ export default function Form(props) {
   }
 
   const postData2 = async () => {
-    const body = { actualAmount, duration, transaction_count }
+    let id = props.id1
+    const body = { actualAmount, duration, transaction_count, id }
     try {
       const response = await axios.post(endpoint2, body);
       // Update the state with the response data
@@ -355,8 +356,51 @@ export default function Form(props) {
           <div className="alert alert-success alert-dismissible fade show" role="alert">
             <h4> Your monthly EMI will be : {messg1} for total amount of : {actualAmount}</h4>
           </div>
-          <button type="button" class="btn btn-primary" onClick={handleGetData}>Button</button>
+          <button type="button" className="btn btn-primary" onClick={handleGetData}>See Your EMI Plans</button>
+          {applyGet1 && (<table className="table table-bordered my-5">
+            <thead>
+              <tr>
+                <th scope="col"><h3>Sr.no</h3></th>
+                <th scope="col"><h3>Title</h3></th>
+                <th scope="col"><h3>Data</h3></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td scope="row">Your ID</td>
+                <td scope="row">{messg2["id"]}</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td scope="row">Amount Paid</td>
+                <td scope="row">{messg2["paid"]}</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td scope="row">Amount Left</td>
+                <td scope="row">{messg2["left"]}</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td scope="row">Total Months Paid</td>
+                <td scope="row">{messg2["months_paid"]}</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td scope="row">Total Months Left</td>
+                <td scope="row">{messg2["months_left"]}</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td scope="row">Next EMI Amount</td>
+                <td scope="row">{messg2["emi_amount"]}</td>
+              </tr>
+            </tbody>
+          </table>
+          )}
         </div>
+
       )}
 
     </>

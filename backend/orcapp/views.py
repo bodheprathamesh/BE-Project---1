@@ -116,7 +116,7 @@ def loan_repayment(request):
         principal_amount = int(python_data['actualAmount'])
         duration = int(python_data['duration'])
         calculate_emi = (principal_amount * R * (1+R)**duration)/((1+R)**duration-1)
-        instance_emi = loanrepay(id = python_data['id'], paid = 0, left = python_data['actualAmount'], emi_amount = calculate_emi)
+        instance_emi = loanrepay(id = python_data['id'], paid = 0, left = python_data['actualAmount'],months_left = duration, months_paid = 0, emi_amount =calculate_emi)        
         instance_emi.save()
         str_val = str(calculate_emi)
         res = {'msg' : str_val,
