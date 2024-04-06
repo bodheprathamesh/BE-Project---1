@@ -38,7 +38,7 @@ export default function Login(props) {
         console.log("id -->", response.data.id);
           props.setId1(response.data.id)
           console.log("id in login ", props.id1);
-          navigate("/");
+          navigate("/home");
         } catch (error) {
           console.error('Error fetching data:', error);
         }

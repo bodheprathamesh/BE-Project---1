@@ -112,7 +112,7 @@ def loan_repayment(request):
         json_data = request.body
         stream = io.BytesIO(json_data)
         python_data = JSONParser().parse(stream)
-        R = 0.12
+        R = 12 / 12 /100
         principal_amount = int(python_data['actualAmount'])
         duration = int(python_data['duration'])
         calculate_emi = (principal_amount * R * (1+R)**duration)/((1+R)**duration-1)

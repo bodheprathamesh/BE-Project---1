@@ -14,7 +14,7 @@ export default function Form(props) {
   let msg;
   let msg1;
   let msg2;
-  let user1 = "user1"
+  // let user1 = "user1"
   const [postData1, setPostData1] = useState('');
   const [applyData1, setApplyData1] = useState('');
   const [applyGet1, setGetData1] = useState('');
@@ -310,7 +310,7 @@ export default function Form(props) {
       {postData1 && !applyData1 && (
         <div className='container my-5'>
           <div className="alert alert-success alert-dismissible fade show" role="alert">
-            <h4> Success ! Congratulations Your Credit Eligibility is : {messg}</h4>
+            <h4 style={{textAlign:"center"}}> Success ! Congratulations Your Credit Eligibility is : {messg}</h4>
           </div>
 
           {/* <div className="success-message" style={mystyle}>
@@ -354,7 +354,7 @@ export default function Form(props) {
       {applyData1 && (
         <div className='container my-5'>
           <div className="alert alert-success alert-dismissible fade show" role="alert">
-            <h4> Your monthly EMI will be : {messg1} for total amount of : {actualAmount}</h4>
+            <h4 style={{textAlign:"center"}}> Your monthly EMI will be : {messg1} for total amount of : {actualAmount}</h4>
           </div>
           <button type="button" className="btn btn-primary" onClick={handleGetData}>See Your EMI Plans</button>
           {applyGet1 && (<table className="table table-bordered my-5">
