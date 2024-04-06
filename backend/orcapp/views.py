@@ -1,19 +1,22 @@
 from django.shortcuts import render
 import io
 from rest_framework.parsers import JSONParser
-from .models import creditinformation
+from .models import creditinformation, loanrepay
 from .serializers import infoserializer
+from .serializers import laonrepay as loanobjserializer
 from rest_framework.renderers import JSONRenderer
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-# import pickle
-import xgboost as xgb
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 import pandas as pd
-# import json
 import tensorflow as tf
+from django.contrib.auth.models import User 
 import numpy as np
 import subprocess
 # Create your views here.
+
 timeseries = [1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000]
 
 def prepare_data(timeseries,n_features):
@@ -35,6 +38,8 @@ def prepare_data(timeseries,n_features):
 x,y = prepare_data(timeseries,3)
 
 @csrf_exempt
+# @api_view(['POST']) 
+# @permission_classes([IsAuthenticated])
 def creditinfoapi(request):
     if request.method == 'GET':
         # json_data = request.body
@@ -48,7 +53,7 @@ def creditinfoapi(request):
         json_data = request.body
         stream = io.BytesIO(json_data)
         python_data = JSONParser().parse(stream)
-        print(python_data)
+        # print(request.session['user_id'])
         serializer = infoserializer(data = python_data)
         if serializer.is_valid():
             serializer.save()
@@ -93,6 +98,7 @@ def getPredictions(jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec,months_array)
     print("in getpredictions")
 
 
+    model = tf.keras.models.load_model('lstm_model_2.h5')
     model = tf.keras.models.load_model('lstm_model_2.h5')
     # model = pickle.load(open('ml_model.sav', 'rb'))
     # scaled = pickle.load(open('scaler.sav', 'rb'))
@@ -159,3 +165,58 @@ def result_function(data):
 
     return result
 
+
+@csrf_exempt
+def loan_repayment(request):
+    if request.method == "POST":
+        json_data = request.body
+        stream = io.BytesIO(json_data)
+        python_data = JSONParser().parse(stream)
+        R = 12 / 12 /100
+        principal_amount = int(python_data['actualAmount'])
+        duration = int(python_data['duration'])
+        calculate_emi = (principal_amount * R * (1+R)**duration)/((1+R)**duration-1)
+        instance_emi = loanrepay(id = python_data['id'], paid = 0, left = python_data['actualAmount'],months_left = duration, months_paid = 0, emi_amount =calculate_emi)        
+        instance_emi.save()
+        str_val = str(calculate_emi)
+        res = {'msg' : str_val,
+            'months' : str(duration) }
+        json_data = JSONRenderer().render(res)
+        return HttpResponse(json_data,content_type = 'application/json')
+
+
+@csrf_exempt
+def monthly_emi(request):
+    # id = request.session["user_id"]
+    if request.method == "POST":
+        json_data = request.body
+        stream = io.BytesIO(json_data)
+        python_data = JSONParser().parse(stream)
+        id = int(python_data['id'])
+        money_paid_data = loanrepay.objects.get(id = id)
+        print(money_paid_data)
+        money_paid_data.paid += money_paid_data.emi_amount
+        money_paid_data.left -= money_paid_data.emi_amount
+        money_paid_data.months_paid += 1
+        money_paid_data.months_left -= 1
+        money_paid_data.save()
+        print(money_paid_data)
+        res = {'msg' : "Thanks For Pay ! See you next month" }
+        json_data = JSONRenderer().render(res)
+        return HttpResponse(json_data,content_type = 'application/json')
+
+    
+@csrf_exempt
+def show_monthly_emi_details(request):
+    # id = request.session["user_id"]
+    if request.method == "POST":
+        json_data = request.body
+        stream = io.BytesIO(json_data)
+        python_data = JSONParser().parse(stream)
+        print("$$$$$$$$$$$$$$$$$$$$$$")
+        print(python_data)
+        print("$$$$$$$$$$$$$$$$$$$$$$")
+        # id = int(python_data['id'])
+        money_paid_data = loanrepay.objects.get(id = 1)
+        result = loanobjserializer(money_paid_data)
+        return JsonResponse(result.data)

@@ -50,14 +50,17 @@ def signin(request):
         my_user = authenticate(username = python_data['username'],password = python_data['password'])
         if my_user is not None:
             login(request ,my_user)
+            user_details = User.objects.get(username = python_data["username"])
+            print(user_details.id)
             msg = "Login Successfull"
-            res = {'msg' : msg }
+            res = {'msg' : msg, 'username' : str(request.user), 'id' : str(user_details.id)}
             json_data = JSONRenderer().render(res)
             return HttpResponse(json_data,content_type = 'application/json')
         else:
             msg = "Invalid Credentials"
             res = {'msg' : msg }
             json_data = JSONRenderer().render(res)
+            return HttpResponse(json_data,content_type = 'application/json' , status = 400)
             return HttpResponse(json_data,content_type = 'application/json', status = 400)
 
 

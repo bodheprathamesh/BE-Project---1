@@ -1,8 +1,11 @@
 import React from 'react'
-import { Link } from "react-router-dom"
+import { Link ,useLocation} from "react-router-dom"
+// import {Nav , NavDropDown} from 'react-router-dom'
 
 export default function Navbar(props) {
-    
+    const location = useLocation();
+    const currentUrl = location.pathname;
+    console.log(currentUrl)
     return (
         <>
             <div className="">
@@ -15,10 +18,18 @@ export default function Navbar(props) {
                         </button>
                         <div className="collapse navbar-collapse" id="navbarNav">
                             <ul className="navbar-nav">
-                                {props.path !== "/login" && (<li className="nav-item">
-                                    <Link className="nav-link active " aria-current="page" to="/login"> Login</Link>
+                                {(currentUrl === "/register") && (<li className="nav-item">
+                                    <Link className="nav-link active " aria-current="page" to="/login" onClick={props.loginHandler}> 
+                                        Login
+                                    </Link>
                                 </li>)}
-                                {props.path !== "/register" &&(<li className="nav-item">
+                                {(currentUrl === "/login" || currentUrl === "/" )&& (<li className="nav-item">
+                                    <Link className="nav-link active" to="/register">Register</Link>
+                                </li>)}
+                                {currentUrl !== "/register" && currentUrl !== "/login" && currentUrl !== "/" && currentUrl !== "/logout"  &&(<li className="nav-item">
+                                    <Link className="nav-link active" to="/logout">Logout</Link>
+                                </li>)}
+                                {currentUrl === "/logout" &&(<li className="nav-item">
                                     <Link className="nav-link active" to="/register">Register</Link>
                                 </li>)}
                             </ul>

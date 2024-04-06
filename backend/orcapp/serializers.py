@@ -13,14 +13,21 @@ class infoserializer(serializers.Serializer):
     oct = serializers.IntegerField()
     nov = serializers.IntegerField()
     dec = serializers.IntegerField()
-    age = serializers.IntegerField()
-    age = serializers.IntegerField()
-    duration = serializers.IntegerField()
-    transaction_count = serializers.IntegerField()
+    # age = serializers.IntegerField()
+    # age = serializers.IntegerField()
+    # duration = serializers.IntegerField()
+    # transaction_count = serializers.IntegerField()
 
     def create(self, validated_data):
         return creditinformation.objects.create(**validated_data)
 
 
 
+class laonrepay(serializers.Serializer):
+    id = serializers.IntegerField()
+    paid = serializers.IntegerField()
+    left = serializers.IntegerField()
+    months_paid = serializers.IntegerField()
+    months_left = serializers.IntegerField()
+    emi_amount = serializers.IntegerField()
     
