@@ -13,8 +13,29 @@ from rest_framework.permissions import IsAuthenticated
 import pandas as pd
 import tensorflow as tf
 from django.contrib.auth.models import User 
+import numpy as np
+import subprocess
 # Create your views here.
 
+timeseries = [1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000]
+
+def prepare_data(timeseries,n_features):
+    X,y = [], []
+    for i in range(len(timeseries)):
+        
+        # find the end of this pattern
+        end_ix = i + n_features
+        # check if are beyond the sequence
+        if end_ix > len(timeseries)-1:
+            break
+        # gather input and output parts of the pattern
+        seq_x, seq_y = timeseries[i:end_ix], timeseries[end_ix]
+        X.append(seq_x)
+        y.append(seq_y)
+
+    return np.array(X), np.array(y)
+
+x,y = prepare_data(timeseries,3)
 
 @csrf_exempt
 # @api_view(['POST']) 
@@ -46,42 +67,73 @@ def creditinfoapi(request):
         return HttpResponse(json_data,content_type = 'application/json')     
 
 
-def getPredictions(jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec):
+def next_12(model, monthly_profits):
+    x_input = np.array(monthly_profits[1:12])
+    print(x_input)
+    temp_input = list(x_input)
+    temp_output = []
+    i = 0
+    while (i<12):
+        if (len(temp_input) > 11):
+            x_input = np.array(temp_input[1:])
+            x_input = x_input.reshape((1,11,1))
+            yhat = model.predict(x_input,verbose = 0)
+            temp_input.append(yhat[0][0])
+            temp_input = temp_input[1:]
+            temp_output.append(yhat[0][0])
+            i = i + 1
+        else:
+            x_input = x_input.reshape((1,11,1))
+            yhat = model.predict(x_input,verbose = 0)
+            temp_input.append(yhat[0][0])
+            temp_output.append(yhat[0][0])
+            i = i + 1
+        
+    print(temp_output)
+    return temp_output
+        
+
+def getPredictions(jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec,months_array):
 
     print("in getpredictions")
 
 
     model = tf.keras.models.load_model('lstm_model_2.h5')
+    model = tf.keras.models.load_model('lstm_model_2.h5')
     # model = pickle.load(open('ml_model.sav', 'rb'))
     # scaled = pickle.load(open('scaler.sav', 'rb'))
 
-    input_data = {
-        "Jan": [jan],
-        "Feb": [feb],
-        "Mar": [mar],
-        "Apr": [apr],
-        "May": [may],
-        "Jun": [jun],
-        "Jul": [jul],
-        "Aug": [aug],
-        "Sept": [sep],
-        "Oct": [oct],
-        "Nov": [nov],
-        "Dec": [dec],
-    }
+    # input_data = {
+    #     "Jan": [jan],
+    #     "Feb": [feb],
+    #     "Mar": [mar],
+    #     "Apr": [apr],
+    #     "May": [may],
+    #     "Jun": [jun],
+    #     "Jul": [jul],
+    #     "Aug": [aug],
+    #     "Sept": [sep],
+    #     "Oct": [oct],
+    #     "Nov": [nov],
+    #     "Dec": [dec],
+    # }
 
-    print(input_data)
+    # print(input_data)
 
-    df = pd.DataFrame(input_data)
+    # df = pd.DataFrame(input_data)
 
-    prediction = model.predict(
-        df
-    )
+    # prediction = model.predict(
+    #     df
+    # )
 
-    print(prediction)
+    # print(prediction)
     
     # print(type(prediction[0]))
-    return prediction[0][0]
+    # return prediction[0][0]
+
+    res = next_12(model,months_array)
+
+    return max(res)
     
 def result_function(data):
     print("in result function")
@@ -100,11 +152,19 @@ def result_function(data):
     nov = int(data['nov'])
     dec = int(data['dec'])
 
-    result = getPredictions(jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec)
+    months_arary = [jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec]
+    x,y = prepare_data(months_arary,11)
+    print(x,y)
+    np.save('xtrain.npy',x)
+    np.save('ytrain.npy',y)
+    subprocess.run(["python", "C:/Users/pbodh/OneDrive/Desktop/MSME/backend/lstm2.py"])
+
+    result = getPredictions(jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec,months_arary)
 
     # print(result)
 
     return result
+
 
 @csrf_exempt
 def loan_repayment(request):

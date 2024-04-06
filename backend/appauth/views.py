@@ -61,6 +61,7 @@ def signin(request):
             res = {'msg' : msg }
             json_data = JSONRenderer().render(res)
             return HttpResponse(json_data,content_type = 'application/json' , status = 400)
+            return HttpResponse(json_data,content_type = 'application/json', status = 400)
 
 
             
