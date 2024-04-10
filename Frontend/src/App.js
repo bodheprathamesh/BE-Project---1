@@ -49,7 +49,7 @@ function App() {
         <Route exact path="/success" element={<><Success/></>}></Route>
         <Route exact path="/login" element={<><Navbar login = {loginHandler} id1={id1} auth={auth}/><Login id1={id1} setId1={setId1} setAuth={setAuth} auth={auth}/></>}></Route>
         <Route exact path="/register" element={<><Navbar path = {registerPath} login = {loginHandler} auth={auth} id1={id1} /><Register auth={auth}/></>}></Route>
-        <Route exact path="/logout" element={<><Navbar login = {loginHandler} status = {auth} id1={id1} auth={auth}/><Logout/><Login id1={id1} setId1={setId1} setAuth={setAuth} auth={auth}/></>}></Route>
+        <Route exact path="/logout" element={<><Navbar login = {loginHandler} status = {auth} id1={id1} auth={auth}/><Logout auth = {auth}/><Login id1={id1} setId1={setId1} setAuth={setAuth} auth={auth}/></>}></Route>
         <Route  exact path="/not-found" element={Notfound}/>
       </Routes>
     </BrowserRouter>
