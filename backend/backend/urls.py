@@ -23,5 +23,6 @@ urlpatterns = [
     path('loanrepay/',views.loan_repayment),  
     path('emi/',views.monthly_emi),
     path('showemidetails/',views.show_monthly_emi_details),
+    path('mails/',views.mail_send),
     path('',include('appauth.urls')),
 ]

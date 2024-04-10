@@ -13,6 +13,10 @@ from rest_framework.permissions import IsAuthenticated
 import pandas as pd
 import tensorflow as tf
 from django.contrib.auth.models import User 
+# from .utils import send_email_notifications
+from django.core.mail import send_mail
+from django.conf import settings
+
 # Create your views here.
 
 
@@ -160,3 +164,16 @@ def show_monthly_emi_details(request):
         money_paid_data = loanrepay.objects.get(id = 1)
         result = loanobjserializer(money_paid_data)
         return JsonResponse(result.data)
+    
+@csrf_exempt
+def mail_send(request):
+    subject = "Loan Repayment"
+    message = "Loan Due with amount 4806"
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = ["atharvamohite8902@gmail.com"]
+    send_mail(subject,message,from_email,recipient_list,fail_silently=False)
+    res = {'msg' : "Thanks For Pay ! See you next month" }
+    json_data = JSONRenderer().render(res)
+    return HttpResponse(json_data,content_type = 'application/json')
+
+    
