@@ -1,6 +1,8 @@
 
 import React from 'react'
 import { Link } from "react-router-dom"
+import Notfound from './Notfound';
+
 
 
 export default function Body(props) {
@@ -13,7 +15,8 @@ export default function Body(props) {
     };
     return (
         <>
-            <div className="container my-3" style={mystyle}>
+
+            {props.auth && (<div className="container my-3" style={mystyle}>
                 <h1 className='my-5'>Welcome to credit checker</h1>
                 <div className="container my-1 ">
                     <div className="container p-2">
@@ -31,8 +34,8 @@ export default function Body(props) {
                             of their financial standing.</h4>
                     </div>
                 </div>
-            </div>
-            <div>
+            </div>)}
+            {props.auth && (<div>
                 <div className="d-grid gap-4 col-6 mx-auto">
                     <Link to="/fill-a-form" className="d-grid gap-3 col-3 mx-auto">
                         <button className="btn btn-primary btn-lg" type="button">Fill a Form</button>
@@ -41,7 +44,10 @@ export default function Body(props) {
                         <button className="btn btn-primary btn-lg" type="button">Upload CSV file</button>
                     </Link>
                 </div>
-            </div>
+            </div>)}
+            {!props.auth && (<div className="container my-5">
+                <Notfound/>
+            </div>)}
             
         </>
     )
