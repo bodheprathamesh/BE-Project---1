@@ -106,7 +106,8 @@ export default function Form(props) {
     
   }
   const postData3 = async () => {
-    const body = props.id1;
+    let id = props.id1
+    const body = {id};
     // console.log("id",id)
     try {
       console.log(body)
