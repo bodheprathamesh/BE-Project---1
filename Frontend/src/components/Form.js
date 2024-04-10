@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import Notfound from './Notfound';
 // import {id} from './Login.js'
 // import Success from './Success';
 // import { useNavigate ,Link} from 'react-router-dom';
@@ -97,10 +98,12 @@ export default function Form(props) {
   const handleApplyData = async () => {
     if (actualAmount > parseInt(messg)) {
       alert("Actual amount cannot be greater than Credit amount")
+    }else{
+      const newData = await postData2();
+      console.log(newData)
     }
 
-    const newData = await postData2();
-    console.log(newData)
+    
   }
   const postData3 = async () => {
     const body = props.id1;
@@ -199,7 +202,7 @@ export default function Form(props) {
   return (
 
     <>
-      {!postData1 && (<div className='contianer my-3'>
+      {props.auth & !postData1 && (<div className='contianer my-3'>
         <div className="container">
           <h3 style={{ textAlign: "center" }}>Fill out the form to check your credit eligibility</h3>
         </div>
@@ -307,7 +310,7 @@ export default function Form(props) {
         </form>
       </div>)}
 
-      {postData1 && !applyData1 && (
+      {props.auth && postData1 && !applyData1 && (
         <div className='container my-5'>
           <div className="alert alert-success alert-dismissible fade show" role="alert">
             <h4 style={{textAlign:"center"}}> Success ! Congratulations Your Credit Eligibility is : {messg}</h4>
@@ -351,7 +354,7 @@ export default function Form(props) {
       )}
       {/* {postData1 && (<Success sentData={postData1} />)} */}
 
-      {applyData1 && (
+      {props.auth && applyData1 && (
         <div className='container my-5'>
           <div className="alert alert-success alert-dismissible fade show" role="alert">
             <h4 style={{textAlign:"center"}}> Your monthly EMI will be : {messg1} for total amount of : {actualAmount}</h4>
@@ -368,33 +371,33 @@ export default function Form(props) {
             <tbody>
               <tr>
                 <td>1</td>
-                <td scope="row">Your ID</td>
-                <td scope="row">{messg2["id"]}</td>
+                <td>Your ID</td>
+                <td>{messg2["id"]}</td>
               </tr>
               <tr>
                 <td>2</td>
-                <td scope="row">Amount Paid</td>
-                <td scope="row">{messg2["paid"]}</td>
+                <td>Amount Paid</td>
+                <td>{messg2["paid"]}</td>
               </tr>
               <tr>
                 <td>3</td>
-                <td scope="row">Amount Left</td>
-                <td scope="row">{messg2["left"]}</td>
+                <td>Amount Left</td>
+                <td>{messg2["left"]}</td>
               </tr>
               <tr>
                 <td>4</td>
-                <td scope="row">Total Months Paid</td>
-                <td scope="row">{messg2["months_paid"]}</td>
+                <td>Total Months Paid</td>
+                <td>{messg2["months_paid"]}</td>
               </tr>
               <tr>
                 <td>5</td>
-                <td scope="row">Total Months Left</td>
-                <td scope="row">{messg2["months_left"]}</td>
+                <td>Total Months Left</td>
+                <td>{messg2["months_left"]}</td>
               </tr>
               <tr>
                 <td>6</td>
-                <td scope="row">Next EMI Amount</td>
-                <td scope="row">{messg2["emi_amount"]}</td>
+                <td>Next EMI Amount</td>
+                <td>{messg2["emi_amount"]}</td>
               </tr>
             </tbody>
           </table>
@@ -402,6 +405,9 @@ export default function Form(props) {
         </div>
 
       )}
+      {!props.auth && (<div className="container my-5">
+          <Notfound/>
+      </div>)}
 
     </>
   )

@@ -2,13 +2,14 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
+import Notfound from './Notfound';
 
 export let id = 0;
 export default function Login(props) {
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log("id in login ", props.id1);
-      }, [props.id1])
+    }, [props.id1])
     const endpoint = "http://127.0.0.1:8000/login/";
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -18,21 +19,21 @@ export default function Login(props) {
     const handleUserChange = (event) => {
         setUsername(event.target.value)
     }
-    
+
     const handlePassChange = (event) => {
         setPassword(event.target.value)
     }
     const postData = async () => {
-        const body = {username,password}
+        const body = { username, password }
         try {
-          const response = await axios.post(endpoint, body);
-          if(response.request.status === 400){
-          }
-          props.setId1(response.data.id)
-          props.setAuth(true);
-          navigate("/home");
+            const response = await axios.post(endpoint, body);
+            if (response.request.status === 400) {
+            }
+            props.setId1(response.data.id)
+            props.setAuth(true);
+            navigate("/home");
         } catch (error) {
-          console.error('Error fetching data:', error);
+            console.error('Error fetching data:', error);
         }
     }
 
@@ -41,11 +42,11 @@ export default function Login(props) {
         console.log(newData);
     }
 
-    
+
 
     return (
         <>
-            <div className="container my-5" >
+            {!props.auth && (<div className="container my-5" >
                 <form>
                     <div className="form-group my-3" style={{ width: "30%", margin: "0 auto" }}>
                         <label htmlFor="exampleInputEmail1">Username</label>
@@ -63,9 +64,12 @@ export default function Login(props) {
                     <div className="form-group my-3" style={{ width: "5%", margin: "0 auto" }}>
                         <button type="button" className="btn btn-primary my-4" onClick={handleSendData}>Login</button>
                     </div>
-                    
+
                 </form>
-            </div>
+            </div>)}
+            {props.auth && (<div className="container my-5">
+                <Notfound />
+            </div>)}
         </>
     )
 }
