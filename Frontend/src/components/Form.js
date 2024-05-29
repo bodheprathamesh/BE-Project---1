@@ -3,7 +3,7 @@ import axios from 'axios'
 import Notfound from './Notfound';
 // import {id} from './Login.js'
 // import Success from './Success';
-// import { useNavigate ,Link} from 'react-router-dom';
+import { Link} from 'react-router-dom';
 
 export default function Form(props) {
   // let navigate = useNavigate();
@@ -19,6 +19,8 @@ export default function Form(props) {
   const [postData1, setPostData1] = useState('');
   const [applyData1, setApplyData1] = useState('');
   const [applyGet1, setGetData1] = useState('');
+  const [emiData, setEmiData] = useState('');
+  const [getEmiData, setGetEmiData] = useState('');
 
   const [name, setName] = useState('');
   const [businessName, setBusinessName] = useState('');
@@ -47,6 +49,7 @@ export default function Form(props) {
   const [messg, setmessg] = useState(0);
   const [messg1, setmessg1] = useState(0);
   const [messg2, setmessg2] = useState(0);
+  const [messg3, setmessg3] = useState(0);
 
   useEffect(() => {
     console.log("msg ", messg);
@@ -55,6 +58,7 @@ export default function Form(props) {
   const endpoint = "http://127.0.0.1:8000/creditapi/"
   const endpoint2 = "http://127.0.0.1:8000/loanrepay/"
   const endpoint3 = "http://127.0.0.1:8000/showemidetails/"
+  const endpoint4 = "http://127.0.0.1:8000/emi/"
 
   const postData = async () => {
     const body = { jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec, age, transaction_count }
@@ -98,16 +102,14 @@ export default function Form(props) {
   const handleApplyData = async () => {
     if (actualAmount > parseInt(messg)) {
       alert("Actual amount cannot be greater than Credit amount")
-    }else{
+    } else {
       const newData = await postData2();
       console.log(newData)
     }
-
-    
   }
   const postData3 = async () => {
     let id = props.id1
-    const body = {id};
+    const body = { id };
     // console.log("id",id)
     try {
       console.log(body)
@@ -123,6 +125,29 @@ export default function Form(props) {
   }
   const handleGetData = async () => {
     const newData = await postData3();
+    console.log(newData)
+  }
+  const handleApplyEmiData = async () => {
+    setEmiData("Done");
+    props.setEmiStatus("Done");
+  }
+  const postData4 = async () => {
+    let id = props.id1
+    const body = { id };
+    // console.log("id",id)
+    try {
+      console.log(body)
+      const response = await axios.post(endpoint4, body);
+      // Update the state with the response data
+      setGetEmiData(response.data);
+      setTimeout(3000)
+      console.log(getEmiData)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+  const handlePayEmiData = async () => {
+    const newData = await postData4();
     console.log(newData)
   }
 
@@ -314,7 +339,7 @@ export default function Form(props) {
       {props.auth && postData1 && !applyData1 && (
         <div className='container my-5'>
           <div className="alert alert-success alert-dismissible fade show" role="alert">
-            <h4 style={{textAlign:"center"}}> Success ! Congratulations Your Credit Eligibility is : {messg}</h4>
+            <h4 style={{ textAlign: "center" }}> Success ! Congratulations Your Credit Eligibility is : {messg}</h4>
           </div>
 
           {/* <div className="success-message" style={mystyle}>
@@ -355,10 +380,10 @@ export default function Form(props) {
       )}
       {/* {postData1 && (<Success sentData={postData1} />)} */}
 
-      {props.auth && applyData1 && (
+      {props.auth && applyData1 && emiData == '' && (
         <div className='container my-5'>
           <div className="alert alert-success alert-dismissible fade show" role="alert">
-            <h4 style={{textAlign:"center"}}> Your monthly EMI will be : {messg1} for total amount of : {actualAmount}</h4>
+            <h4 style={{ textAlign: "center" }}> Your monthly EMI will be : {messg1} for total amount of : {actualAmount}</h4>
           </div>
           <button type="button" className="btn btn-primary" onClick={handleGetData}>See Your EMI Plans</button>
           {applyGet1 && (<table className="table table-bordered my-5">
@@ -403,11 +428,26 @@ export default function Form(props) {
             </tbody>
           </table>
           )}
+          {applyGet1 && (<div className="container d-grid gap-2 col-1 mx-auto">
+            <button className="btn btn-primary" onClick={handleApplyEmiData} type="button">Apply</button>
+          </div>)}
         </div>
 
       )}
+      {props.auth && emiData != '' && (
+        <div className="container">
+          <div className="alert alert-success alert-dismissible fade show" role="alert">
+            <h4 style={{ textAlign: "center" }}>Congratulations ! You have successfully applied  for the loan. </h4>
+
+          </div>
+          <Link to="/upload-csv-file" className="d-grid gap-3 col-3 mx-auto my-4">
+            <button className="btn btn-primary btn-lg" onClick={handlePayEmiData} type="button">Pay Emi</button>
+          </Link>
+
+        </div>)
+      }
       {!props.auth && (<div className="container my-5">
-          <Notfound/>
+        <Notfound />
       </div>)}
 
     </>

@@ -139,15 +139,19 @@ def monthly_emi(request):
         id = int(python_data['id'])
         money_paid_data = loanrepay.objects.get(id = id)
         print(money_paid_data)
-        money_paid_data.paid += money_paid_data.emi_amount
-        money_paid_data.left -= money_paid_data.emi_amount
-        money_paid_data.months_paid += 1
-        money_paid_data.months_left -= 1
-        money_paid_data.save()
+        if money_paid_data.months_left > 0 : 
+            money_paid_data.paid += money_paid_data.emi_amount
+            money_paid_data.left -= money_paid_data.emi_amount
+            money_paid_data.months_paid += 1
+            money_paid_data.months_left -= 1
+            money_paid_data.save()
         print(money_paid_data)
-        res = {'msg' : "Thanks For Pay ! See you next month" }
-        json_data = JSONRenderer().render(res)
-        return HttpResponse(json_data,content_type = 'application/json')
+        money_paid_data = loanrepay.objects.get(id = id)
+        result = loanobjserializer(money_paid_data)
+        return JsonResponse(result.data)
+        # res = {'msg' : "Thanks For Pay ! See you next month" }
+        # json_data = JSONRenderer().render(res)
+        # return HttpResponse(json_data,content_type = 'application/json')
 
     
 @csrf_exempt
