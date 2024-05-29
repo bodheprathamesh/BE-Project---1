@@ -2,10 +2,15 @@
 import React from 'react'
 import { Link } from "react-router-dom"
 import Notfound from './Notfound';
+import { useState } from 'react'
+import axios from 'axios'
 
 
 
 export default function Body(props) {
+    const endpoint4 = "http://127.0.0.1:8000/emi/"
+    const [messg3, setmessg3] = useState(0);
+    let msg;
     const mystyle = {
         color: "black",
         fontweight: "bold",
@@ -13,6 +18,29 @@ export default function Body(props) {
         fontFamily: "Arial",
         textAlign: "center"
     };
+    const [getEmiData, setGetEmiData] = useState('');
+    const postData4 = async () => {
+        let id = props.id1
+        const body = { id };
+        // console.log("id",id)
+        try {
+          console.log(body)
+          const response = await axios.post(endpoint4, body);
+          // Update the state with the response data
+          setGetEmiData(response.data);
+          msg = response.data;
+          setmessg3(msg)
+          props.setMessage(msg)
+          setTimeout(3000)
+          console.log(getEmiData)
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+      const handlePayEmiData = async () => {
+        const newData = await postData4();
+        console.log(newData)
+      }
     return (
         <>
 
@@ -41,7 +69,7 @@ export default function Body(props) {
                         <button className="btn btn-primary btn-lg" type="button">Fill a Form</button>
                     </Link>
                     <Link to="/upload-csv-file" className="d-grid gap-3 col-3 mx-auto my-4">
-                        <button className="btn btn-primary btn-lg" type="button">Upload CSV file</button>
+                        <button className="btn btn-primary btn-lg" type="button" onClick={handlePayEmiData}>Pay Emi</button>
                     </Link>
                 </div>
             </div>)}

@@ -9,8 +9,9 @@ export default function Navbar(props) {
     const currentUrl = location.pathname;
     console.log(currentUrl)
     const handleLogout = () => {
-        props.setId1(0);
         props.setAuth(false);
+        props.setId1(0);
+        
 
     }
     return (

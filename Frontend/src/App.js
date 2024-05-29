@@ -19,10 +19,15 @@ function App() {
   const [ id1, setId1 ] = useState("0");
 
   const[auth , setAuth] = useState(false);
+  const[emiStatus, setEmiStatus] = useState("");
+  const[message,setMessage] = useState("")
+  
   
   const loginHandler = () => {
     setAuth(!auth);
   };
+
+  
 
   // const ProtectedRoute = ({ component: Component, isAuthenticated, ...rest }) => (
   //   <Route
@@ -43,9 +48,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<><Navbar path = {registerPath} login = {loginHandler} auth = {auth} id1={id1} /><Login id1={id1} setId1={setId1} setAuth={setAuth} auth={auth}/></>}></Route>
-        <Route exact path="/home" element={<><Navbar path = {registerPath} login = {loginHandler} auth = {auth} id1={id1} /><Body auth={auth}/></>}></Route>
-        <Route exact path="/fill-a-form" element={<><Navbar path = {registerPath} login = {loginHandler} auth = {auth} id1={id1} /><Form id1={id1} setId1={setId1} auth={auth} /></>}></Route>
-        <Route exact path="/upload-csv-file" element={<><Navbar path = {registerPath} login = {loginHandler} auth={auth} id1={id1} /><Csv auth={auth}/></>}></Route>
+        <Route exact path="/home" element={<><Navbar path = {registerPath} login = {loginHandler} auth = {auth} id1={id1} /><Body auth={auth} id1={id1} setMessage={setMessage}/></>}></Route>
+        <Route exact path="/fill-a-form" element={<><Navbar path = {registerPath} login = {loginHandler} auth = {auth} id1={id1}/><Form id1={id1} setId1={setId1} auth={auth}  setEmiStatus={setEmiStatus}/></>}></Route>
+        <Route exact path="/upload-csv-file" element={<><Navbar path = {registerPath} login = {loginHandler} auth={auth} id1={id1}  /><Csv auth={auth} emiStatus={emiStatus} message={message}/></>}></Route>
         <Route exact path="/success" element={<><Success/></>}></Route>
         <Route exact path="/login" element={<><Navbar login = {loginHandler} id1={id1} auth={auth}/><Login id1={id1} setId1={setId1} setAuth={setAuth} auth={auth}/></>}></Route>
         <Route exact path="/register" element={<><Navbar path = {registerPath} login = {loginHandler} auth={auth} id1={id1} /><Register auth={auth}/></>}></Route>
