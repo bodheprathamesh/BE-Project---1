@@ -440,8 +440,8 @@ export default function Form(props) {
             <h4 style={{ textAlign: "center" }}>Congratulations ! You have successfully applied  for the loan. </h4>
 
           </div>
-          <Link to="/upload-csv-file" className="d-grid gap-3 col-3 mx-auto my-4">
-            <button className="btn btn-primary btn-lg" onClick={handlePayEmiData} type="button">Pay Emi</button>
+          <Link to="/home" className="d-grid gap-3 col-3 mx-auto my-4">
+            <button className="btn btn-primary btn-lg" type="button">Pay Emi</button>
           </Link>
 
         </div>)
